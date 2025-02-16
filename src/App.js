@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const FLIGHTSSCRAPER_KEY = "1d0ecd1882mshfd667085d52308dp1c9e8fjsn751e50d95b16";
+const AIR_SCRAPPER_KEY = "1d0ecd1882mshfd667085d52308dp1c9e8fjsn751e50d95b16";
 const MAPTILES_API_KEY = "Z1krOrZfLpLqjiy7DpIS";
 
 const App = () => {
@@ -15,7 +15,7 @@ const App = () => {
   const fetchFlights = async () => {
     try {
       const response = await axios.get(
-        "https://sky-scanner3.p.rapidapi.com/flights",
+        "https://sky-scrapper.p.rapidapi.com/api/v1/flights/getFlightDetails",
         {
           params: {
             from: from, // Departure airport/city
@@ -25,13 +25,14 @@ const App = () => {
             currency: "USD",
           },
           headers: {
-            "X-RapidAPI-Key": FLIGHTSSCRAPER_KEY,
-            "X-RapidAPI-Host": "sky-scanner3.p.rapidapi.com",
+            "X-RapidAPI-Key": AIR_SCRAPPER_KEY,
+            "X-RapidAPI-Host": "sky-scrapper.p.rapidapi.com",
           },
         }
       );
 
-      console.log(response.data); // Debugging: Check response structure
+      console.log("API Response:", response.data); // Debugging: Check response structure
+      console.log("Flights state:", flights);
       setFlights(response.data.flights || []); // Update state with flight results
     } catch (error) {
       console.error("Error fetching flights:", error);
@@ -75,8 +76,7 @@ const App = () => {
           <ul>
             {flights.map((flight, index) => (
               <li key={index}>
-                Airline: {flight.airline} | Price: {flight.price} | Departure:{" "}
-                {flight.departure_time}
+                Airline: {flight.airline} | Price: {flight.price} | Departure:{flight.departure_time}
               </li>
             ))}
           </ul>
